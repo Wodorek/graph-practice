@@ -7,6 +7,7 @@ const router = createRouter({
     { path: '/', redirect: '/clients' },
     { path: '/clients', component: Clients },
     // {path:'/projects', component:Projects}
+    { path: '/:pathMatch(.*)*', redirect: '/clients' },
   ],
 });
 
