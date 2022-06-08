@@ -1,5 +1,33 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Spinner from '../components/Spinner.vue';
+import { GET_PROJECT } from '../queries/projectQueries';
+import { useQuery } from '@vue/apollo-composable';
+import { useRoute, RouterLink } from 'vue-router';
+import { computed } from '@vue/reactivity';
+
+const route = useRoute();
+const id = route.params.id;
+
+console.log(id);
+
+const { result, loading, error } = useQuery(GET_PROJECT, {
+  id,
+});
+
+const project = computed(() => result?.value?.project ?? {});
+</script>
 
 <template>
-  <div>I am a project</div>
+  <spinner v-if="loading"></spinner>
+  <p v-if="error">{{ error }}</p>
+  <div class="mx auto w-75 card p-5">
+    <router-link to="/" class="btn btn-light btn-sm w-25 d-inline ms-auto"
+      >Back</router-link
+    >
+    <h1>{{ project.name }}</h1>
+    <p>{{ project.description }}</p>
+    <h5 class="mt-3">Project Status</h5>
+    <p class="lead">{{ project.status }}</p>
+    <client-info></client-info>
+  </div>
 </template>
