@@ -3,6 +3,7 @@ import type { PropType } from 'vue';
 import { useMutation } from '@vue/apollo-composable';
 import { DELETE_CLIENT } from '../mutations/clientMutations';
 import type { Client } from '../../types';
+import { GET_CLIENTS } from '@/queries/clientQueries';
 
 const props = defineProps({
   client: {
@@ -14,6 +15,20 @@ const props = defineProps({
 const deleteClient = useMutation(DELETE_CLIENT, {
   variables: {
     id: props.client.id,
+  },
+  update(cache, { data: { deleteClient } }) {
+    const { clients } = cache.readQuery({
+      query: GET_CLIENTS,
+    }) as any;
+
+    cache.writeQuery({
+      query: GET_CLIENTS,
+      data: {
+        clients: clients.filter(
+          (client: Client) => client.id !== deleteClient.id
+        ),
+      },
+    });
   },
 });
 

@@ -9,9 +9,28 @@ import { faTrashCan } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faTrashCan);
 
+const cache = new InMemoryCache({
+  typePolicies: {
+    Query: {
+      fields: {
+        clients: {
+          merge(_, incoming) {
+            return incoming;
+          },
+        },
+        projects: {
+          merge(_, incoming) {
+            return incoming;
+          },
+        },
+      },
+    },
+  },
+});
+
 const client = new ApolloClient({
   uri: 'http://localhost:3030/graphql',
-  cache: new InMemoryCache(),
+  cache,
 });
 
 const app = createApp({
