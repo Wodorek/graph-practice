@@ -5,9 +5,15 @@ import router from './router';
 import App from './App.vue';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faTrashCan, faUser } from '@fortawesome/free-solid-svg-icons';
+import {
+  faTrashCan,
+  faUser,
+  faEnvelope,
+  faPhone,
+  faIdBadge,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faTrashCan, faUser);
+library.add(faTrashCan, faUser, faEnvelope, faPhone, faIdBadge);
 
 const cache = new InMemoryCache({
   typePolicies: {
