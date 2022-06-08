@@ -17,7 +17,12 @@ export const ADD_PROJECT = gql`
       name
       description
       status
-      clientId
+      client {
+        name
+        email
+        phone
+        id
+      }
     }
   }
 `;

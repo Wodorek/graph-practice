@@ -26,7 +26,7 @@ console.log(props.client);
     </li>
     <li class="list-group-item">
       <font-awesome-icon class="icon" :icon="'phone'"></font-awesome-icon
-      >{{ props.client.name }}
+      >{{ props.client.phone }}
     </li>
   </ul>
 </template>
