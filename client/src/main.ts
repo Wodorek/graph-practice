@@ -11,9 +11,10 @@ import {
   faEnvelope,
   faPhone,
   faIdBadge,
+  faList,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-library.add(faTrashCan, faUser, faEnvelope, faPhone, faIdBadge);
+library.add(faTrashCan, faUser, faEnvelope, faPhone, faIdBadge, faList);
 
 const cache = new InMemoryCache({
   typePolicies: {
