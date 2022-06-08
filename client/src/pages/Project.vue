@@ -4,6 +4,7 @@ import { GET_PROJECT } from '../queries/projectQueries';
 import { useQuery } from '@vue/apollo-composable';
 import { useRoute, RouterLink } from 'vue-router';
 import { computed } from '@vue/reactivity';
+import ClientInfo from '../components/ClientInfo.vue';
 
 const route = useRoute();
 const id = route.params.id;
@@ -15,12 +16,15 @@ const { result, loading, error } = useQuery(GET_PROJECT, {
 });
 
 const project = computed(() => result?.value?.project ?? {});
+const client = computed(() => project?.value?.client ?? {});
+
+console.log(client);
 </script>
 
 <template>
   <spinner v-if="loading"></spinner>
   <p v-if="error">{{ error }}</p>
-  <div class="mx auto w-75 card p-5">
+  <div v-if="project && client" class="mx auto w-75 card p-5">
     <router-link to="/" class="btn btn-light btn-sm w-25 d-inline ms-auto"
       >Back</router-link
     >
@@ -28,6 +32,6 @@ const project = computed(() => result?.value?.project ?? {});
     <p>{{ project.description }}</p>
     <h5 class="mt-3">Project Status</h5>
     <p class="lead">{{ project.status }}</p>
-    <client-info></client-info>
+    <client-info :client="client"></client-info>
   </div>
 </template>
