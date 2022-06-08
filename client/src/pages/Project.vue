@@ -5,11 +5,10 @@ import { useQuery } from '@vue/apollo-composable';
 import { useRoute, RouterLink } from 'vue-router';
 import { computed } from '@vue/reactivity';
 import ClientInfo from '../components/ClientInfo.vue';
+import DeleteProjectButton from '../components/DeleteProjectButton.vue';
 
 const route = useRoute();
-const id = route.params.id;
-
-console.log(id);
+const id = route.params.id as string;
 
 const { result, loading, error } = useQuery(GET_PROJECT, {
   id,
@@ -17,6 +16,8 @@ const { result, loading, error } = useQuery(GET_PROJECT, {
 
 const project = computed(() => result?.value?.project ?? {});
 const client = computed(() => project?.value?.client ?? {});
+
+console.log(project);
 
 console.log(client);
 </script>
@@ -33,5 +34,6 @@ console.log(client);
     <h5 class="mt-3">Project Status</h5>
     <p class="lead">{{ project.status }}</p>
     <client-info :client="client"></client-info>
+    <delete-project-button :projectId="id"></delete-project-button>
   </div>
 </template>
