@@ -6,6 +6,7 @@ import { useRoute, RouterLink } from 'vue-router';
 import { computed } from '@vue/reactivity';
 import ClientInfo from '../components/ClientInfo.vue';
 import DeleteProjectButton from '../components/DeleteProjectButton.vue';
+import EditProjectForm from '../components/EditProjectForm.vue';
 
 const route = useRoute();
 const id = route.params.id as string;
@@ -34,6 +35,7 @@ console.log(client);
     <h5 class="mt-3">Project Status</h5>
     <p class="lead">{{ project.status }}</p>
     <client-info :client="client"></client-info>
+    <edit-project-form :project="project"></edit-project-form>
     <delete-project-button :projectId="id"></delete-project-button>
   </div>
 </template>
