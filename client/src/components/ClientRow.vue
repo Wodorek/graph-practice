@@ -31,8 +31,6 @@ const deleteClient = useMutation(DELETE_CLIENT, {
     });
   },
 });
-
-console.log(deleteClient);
 </script>
 
 <template>
