@@ -2,8 +2,9 @@
 import type { PropType } from 'vue';
 import { useMutation } from '@vue/apollo-composable';
 import { DELETE_CLIENT } from '../mutations/clientMutations';
-import type { Client } from '../../types';
 import { GET_CLIENTS } from '@/queries/clientQueries';
+import { GET_PROJECTS } from '@/queries/projectQueries';
+import type { Client } from '../../types';
 
 const props = defineProps({
   client: {
@@ -12,24 +13,8 @@ const props = defineProps({
   },
 });
 
-const deleteClient = useMutation(DELETE_CLIENT, {
-  variables: {
-    id: props.client.id,
-  },
-  update(cache, { data: { deleteClient } }) {
-    const { clients } = cache.readQuery({
-      query: GET_CLIENTS,
-    }) as any;
-
-    cache.writeQuery({
-      query: GET_CLIENTS,
-      data: {
-        clients: clients.filter(
-          (client: Client) => client.id !== deleteClient.id
-        ),
-      },
-    });
-  },
+const { mutate: deleteClient } = useMutation(DELETE_CLIENT, {
+  refetchQueries: [{ query: GET_CLIENTS }, { query: GET_PROJECTS }],
 });
 </script>
 
@@ -39,7 +24,10 @@ const deleteClient = useMutation(DELETE_CLIENT, {
     <td>{{ props.client.email }}</td>
     <td>{{ props.client.phone }}</td>
     <td>
-      <button @click="deleteClient.mutate()" class="btn btn-danger btn-sm">
+      <button
+        @click="deleteClient({ id: props.client.id })"
+        class="btn btn-danger btn-sm"
+      >
         <font-awesome-icon :icon="['fas', 'trash-can']"></font-awesome-icon>
       </button>
     </td>
