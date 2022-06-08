@@ -1,13 +1,43 @@
 <script setup lang="ts">
 import { ref } from 'vue';
+import { ADD_CLIENT } from '../mutations/clientMutations';
+import { useMutation } from '@vue/apollo-composable';
+import { GET_CLIENTS } from '@/queries/clientQueries';
 
 const name = ref('');
 const email = ref('');
 const phone = ref('');
 
+const addClient = useMutation(ADD_CLIENT).mutate;
+
 function submitHandler(e: Event) {
   e.preventDefault();
-  console.log(name.value, email.value, phone.value);
+
+  if (name.value === '' || email.value === '' || phone.value === '') {
+    alert('Please fill in all fields');
+    return;
+  }
+
+  addClient(
+    { name: name.value, email: email.value, phone: phone.value },
+    {
+      update(cache, { data: { addClient } }) {
+        const { clients } = cache.readQuery({
+          query: GET_CLIENTS,
+        }) as any;
+
+        cache.writeQuery({
+          query: GET_CLIENTS,
+          data: {
+            clients: [...clients, addClient],
+          },
+        });
+      },
+    }
+  );
+  name.value = '';
+  email.value = '';
+  phone.value = '';
 }
 </script>
 
