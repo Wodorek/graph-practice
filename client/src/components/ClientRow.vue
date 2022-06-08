@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import type { PropType } from 'vue';
+import { useMutation } from '@vue/apollo-composable';
+import { DELETE_CLIENT } from '../mutations/clientMutations';
 import type { Client } from '../../types';
 
 const props = defineProps({
@@ -8,6 +10,14 @@ const props = defineProps({
     type: Object as PropType<Client>,
   },
 });
+
+const deleteClient = useMutation(DELETE_CLIENT, {
+  variables: {
+    id: props.client.id,
+  },
+});
+
+console.log(deleteClient);
 </script>
 
 <template>
@@ -16,11 +26,8 @@ const props = defineProps({
     <td>{{ props.client.email }}</td>
     <td>{{ props.client.phone }}</td>
     <td>
-      <button class="btn btn-danger btn-sm">
-        <font-awesome-icon
-          size="1"
-          :icon="['fas', 'trash-can']"
-        ></font-awesome-icon>
+      <button @click="deleteClient.mutate()" class="btn btn-danger btn-sm">
+        <font-awesome-icon :icon="['fas', 'trash-can']"></font-awesome-icon>
       </button>
     </td>
   </tr>
